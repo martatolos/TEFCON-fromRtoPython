@@ -26,8 +26,7 @@ class HourlyPowerConsumptions(object):
     DEFAULT_ENCODING = 'UTF-8'
 
     # constructor
-    def __init__(self, dir_path, pattern, sheet='Statistics', skiprows=9,
-                 maxcolumns=26, hourchange='3B:00:00'):
+    def __init__(self, dir_path, pattern, sheet='Statistics', skiprows=9, maxcolumns=26, hourchange='3B:00:00'):
 
         # check if there is a saved data frame with the values
         if os.path.isfile(os.path.join(dir_path, 'hconsum')):
@@ -37,8 +36,7 @@ class HourlyPowerConsumptions(object):
                                 maxcolumns, hourchange)
 
     # load data frame from files
-    def load_dataframe(self, dir_path, pattern, sheet='Statistics', skiprows=9,
-                       maxcolumns=26, hourchange='3B:00:00'):
+    def load_dataframe(self, dir_path, pattern, sheet='Statistics', skiprows=9, maxcolumns=26, hourchange='3B:00:00'):
         """
         This function parses hourly (1:24) consumption data from
         all countries and returns a Pandas DataFrame with the
@@ -106,7 +104,6 @@ class HourlyPowerConsumptions(object):
         # save the data frame for latter use, to avoid reading all files again
         self.df.to_pickle(os.path.join(dir_path, 'hconsum'))
 
-
     def historical_daily_aggregates(self, country, year, num_years = 3):
         """
         Obtain a new data frame with historical daily aggregate consumption
@@ -118,7 +115,7 @@ class HourlyPowerConsumptions(object):
         @return data frame with the daily aggregated consumption
         """
 
-        df = self.df
+        df = self.df.copy(deep=True)
 
         # Select the years to consider
         df = df[df.year.isin(range(year - num_years, year + 1))]
@@ -148,18 +145,14 @@ class HourlyPowerConsumptions(object):
         @param country: Country to select
         @return: data frame with the country normalized hourly consumptions
         """
-        df = self.df
+        df = self.df.copy(deep=True)
 
         # Select values only for this country
         df = df[df.Country == country]
 
         # Set index to make computations easier
-        df = df.set_index(['Country', 'year', "month",
-                           "weekday", "date", "Day"])
+        df = df.set_index(['Country', 'year', "month", "weekday", "date", "Day"])
 
         # Do normalization based on the daily consumption
         daily_consumption = df.sum(axis=1)
-        df = df.div(daily_consumption, axis='index')
-
-        # return the dataframe
-        return df
+        return df.div(daily_consumption, axis='index')
