@@ -6,7 +6,7 @@ __version__ = "1.0"
 __email__ = "zoraida@tid.es"
 
 
-from HourlyPowerConsumptions import HourlyPowerConsumptions
+from hourlypowerconsumptions import HourlyPowerConsumptions
 from visualizations import plot_barchart
 import numpy as np
 from sklearn.cluster import KMeans
@@ -17,7 +17,8 @@ if __name__ == "__main__":
     dir_path = "/Users/zoraida/Desktop/TEFCON/all-country-data/hourly"
     pattern = "/Hourly_201*month*.xls"
 
-    pc = HourlyPowerConsumptions(dir_path, pattern, skiprows=9, maxcolumns=26, hourchange='3B:00:00')
+    pc = HourlyPowerConsumptions(dir_path, pattern, skiprows=9,
+                                 maxcolumns=26, hourchange='3B:00:00')
 
     country = "ES"# country to analyse
     df = pc.normalized_hourly_country_data(country)
@@ -48,7 +49,8 @@ if __name__ == "__main__":
     xticklabels = ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
     legend = ('Cluster 0', 'Cluster 1')
 
-    #plot_barchart(chart_matrix.T, None, ylabel, title, xticklabels, legend, width=0.35)
+    plot_barchart(chart_matrix.T, None, ylabel, title, xticklabels,
+                  legend, width=0.35)
 
     # Histogram for month
     c1 = df_cluster0.month.value_counts(sort=False).values
@@ -57,10 +59,12 @@ if __name__ == "__main__":
     chart_matrix = np.asarray([c1, c2])
     ylabel = 'Observations'
     title = 'Month'
-    xticklabels = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+    xticklabels = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+                   'Sep', 'Oct', 'Nov', 'Dec')
     legend = ('Cluster 0', 'Cluster 1')
 
-    plot_barchart(chart_matrix.T, None, ylabel, title, xticklabels, legend, width=0.35)
+    plot_barchart(chart_matrix.T, None, ylabel, title, xticklabels,
+                  legend, width=0.35)
 
     # Histogram for year
     c1 = df_cluster0.year.value_counts(sort=False).values
@@ -72,4 +76,5 @@ if __name__ == "__main__":
     xticklabels = ('2010', '2011', '2012', '2013')
     legend = ('Cluster 0', 'Cluster 1')
 
-    plot_barchart(chart_matrix.T, None, ylabel, title, xticklabels, legend, width=0.35)
+    plot_barchart(chart_matrix.T, None, ylabel, title, xticklabels,
+                  legend, width=0.35)

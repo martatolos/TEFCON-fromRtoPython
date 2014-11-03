@@ -96,7 +96,8 @@ if __name__ == "__main__":
     year = 2013 # year to predict
     country = 'ES' # country to predict
 
-    pc = HourlyPowerConsumptions(dir_path, pattern, skiprows=9, maxcolumns=26, hourchange='3B:00:00')
+    pc = HourlyPowerConsumptions(dir_path, pattern, skiprows=9,
+                                 maxcolumns=26, hourchange='3B:00:00')
     # get data transformed: country | 01-01-2011 | 01-01-2012 | 01-01-2013 |
     # ... | 31-12-2011 | 31-12-2012 | 31-12-2013
 
@@ -110,7 +111,8 @@ if __name__ == "__main__":
     y_train = df[df.year.isin(range(year-3,year))].Consumption.values
     y_test = df[df.year == year].Consumption.values
 
-    X_train = var = df[df.year.isin(range(year - 3, year))][['month', 'year', 'weekday']].values
+    X_train = var = df[df.year.isin(
+        range(year - 3, year))][['month','year', 'weekday']].values
     X_test = df[df.year == year][['month','year','weekday']].values
 
     regressor = LinearRegression()
@@ -119,9 +121,14 @@ if __name__ == "__main__":
     X_train_T = X_train.astype(int)
     X_test_T = X_test.astype(int)
 
-    plot_univariate_regression(regressor, X_train_T[:,[0]], y_train, X_test_T[:,[0]], y_test, 'Month', 'Consumption')
-    plot_univariate_regression(regressor, X_train_T[:,[1]], y_train, X_test_T[:,[1]], y_test, 'Year', 'Consumption')
-    plot_univariate_regression(regressor, X_train_T[:,[2]], y_train, X_test_T[:,[2]], y_test, 'Weekday', 'Consumption')
+    plot_univariate_regression(regressor, X_train_T[:,[0]], y_train,
+                               X_test_T[:,[0]], y_test, 'Month', 'Consumption')
+    plot_univariate_regression(regressor,
+                               X_train_T[:,[1]], y_train, X_test_T[:,[1]],
+                               y_test, 'Year', 'Consumption')
+    plot_univariate_regression(regressor, X_train_T[:,[2]], y_train,
+                               X_test_T[:,[2]], y_test,
+                               'Weekday', 'Consumption')
 
     vec = OneHotEncoder(sparse=False, categorical_features=[0, 2])
     X_train_T = vec.fit_transform(X_train).astype(int)
@@ -131,4 +138,5 @@ if __name__ == "__main__":
     y_pred = evaluate(regressor, X_train_T, y_train, X_test_T, y_test)
 
     # 2013 no es bisiesto, ojo con eso
-    plot_curves(range(1, 366), y_pred, y_test, 'Days of the year', country + ' Consumption', ['Predicted', 'Truth'])
+    plot_curves(range(1, 366), y_pred, y_test, 'Days of the year',
+                country + ' Consumption', ['Predicted', 'Truth'])

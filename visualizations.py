@@ -19,14 +19,16 @@ def plot_regression(x, y_truth, y_pred, x_label, y_label):
     """
     plt.scatter(x, y_truth,  color='black')
     plt.plot(x, y_pred, color='blue', linewidth=3)
-    plt.axis([x.min() - 0.2, x.max() + 0.2, y_truth.min() - 0.2, y_truth.max() + 0.2])
+    plt.axis([x.min() - 0.2, x.max() + 0.2, y_truth.min() - 0.2,
+              y_truth.max() + 0.2])
     plt.xlabel(x_label)
     plt.ylabel(y_label)
 
     plt.show()
 
 
-def plot_barchart(chart_matrix, xlabel, ylabel, title, xticklabels, legend, width=0.35):
+def plot_barchart(chart_matrix, xlabel, ylabel, title, xticklabels,
+                  legend, width=0.35):
     """
     Plots bars chart.
     :param chart_matrix: numpy array of shape(n_feature_categories, n_clusters)
@@ -43,7 +45,8 @@ def plot_barchart(chart_matrix, xlabel, ylabel, title, xticklabels, legend, widt
     bars = []
 
     for idx, target in enumerate(chart_matrix.T):
-        bars.append(ax.bar(left=index + (width * idx), height=target, width=width, color=np.random.rand(3,1)))
+        bars.append(ax.bar(left=index + (width * idx), height=target,
+                           width=width, color=np.random.rand(3,1)))
 
     # add some text for labels, title and axes ticks
     ax.set_ylabel(ylabel)
