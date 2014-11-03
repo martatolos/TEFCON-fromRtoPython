@@ -28,6 +28,18 @@ class HourlyPowerConsumptions(object):
     # constructor
     def __init__(self, dir_path, pattern, sheet='Statistics', skiprows=9,
                  maxcolumns=26, hourchange='3B:00:00'):
+        """
+        Constructor
+        @param dir_path: The path where to search for the files
+        @param pattern: The pattern of the xlsx files to be read
+        @param sheet: The sheet to be read
+        @param skiprows: rows to skip from the excel file
+        @param maxcolumns: max number of columns that should appear on the
+        excel file (except for months with hour change)
+        @param hourchange: label showing the hour change that makes a new
+        column on the worksheet and should be treated
+        @return: A Pandas DataFrame object with the hourly consumption
+        """
 
         # check if there is a saved data frame with the values
         if os.path.isfile(os.path.join(dir_path, 'hconsum')):
@@ -107,7 +119,7 @@ class HourlyPowerConsumptions(object):
         self.df.to_pickle(os.path.join(dir_path, 'hconsum'))
 
 
-    def historical_daily_aggregates(self, country, year, num_years = 3):
+    def historical_daily_aggregates(self, country, year, num_years=3):
         """
         Obtain a new data frame with historical daily aggregate consumption
         for a specific country
@@ -118,7 +130,7 @@ class HourlyPowerConsumptions(object):
         @return data frame with the daily aggregated consumption
         """
 
-        df = self.df
+        df = self.df.copy(deep=True)
 
         # Select the years to consider
         df = df[df.year.isin(range(year - num_years, year + 1))]
@@ -148,7 +160,7 @@ class HourlyPowerConsumptions(object):
         @param country: Country to select
         @return: data frame with the country normalized hourly consumptions
         """
-        df = self.df
+        df = self.df.copy(deep=True)
 
         # Select values only for this country
         df = df[df.Country == country]
