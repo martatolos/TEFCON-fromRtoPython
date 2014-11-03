@@ -6,7 +6,7 @@ __version__ = "1.0"
 __email__ = "zoraida@tid.es"
 
 
-from HourlyPowerConsumptions import HourlyPowerConsumptions
+from hourlypowerconsumptions import HourlyPowerConsumptions
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -91,7 +91,7 @@ def plot_curves(x, y_pred, y_test, x_label, y_label, legend):
 
 if __name__ == "__main__":
     # Should be changed to be pased as parameters
-    dir_path = "/Users/zoraida/Desktop/TEFCON/all-country-data/hourly"
+    dir_path = "/Users/mtolos/BoxSyncPrivado/Box Sync/Projecte/all-country-data"
     pattern = "/Hourly_201*month*.xls"
     year = 2013 # year to predict
     country = 'ES' # country to predict
